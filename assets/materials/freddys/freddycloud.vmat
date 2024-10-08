@@ -1,0 +1,31 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/projected_decals.shader"
+
+	//---- Decal ----
+	F_CUTOFF_ANGLE 1
+
+	//---- Ambient Occlusion ----
+	TextureAmbientOcclusion "materials/default/default_ao.tga"
+
+	//---- Color ----
+	TextureColor "materials/freddys/freddycloud.tga"
+
+	//---- Decal ----
+	g_flCutoffAngle "60.000"
+	g_flCutoffAngleSoftness "5.000"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Lighting ----
+	g_flGlossiness "0.500"
+
+	//---- Metalness ----
+	TextureMetalness "materials/default/default_metal.tga"
+
+	//---- Translucent ----
+	TextureTranslucency "materials/default/default_trans.tga"
+}
