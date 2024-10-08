@@ -1,0 +1,108 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc29:version{3cec427c-1b0e-4d48-a90a-0436f33a6041} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "#apl0002_body.vmat"
+								to = "materials/models/techmisc/tape/apl0002_body.vmat"
+							},
+							{
+								from = "#apl0002_detail.vmat"
+								to = "materials/models/techmisc/tape/apl0002_detail.vmat"
+							},
+							{
+								from = "#apl0002_acrylic_glass.vmat"
+								to = "materials/glass/glass_a.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = ""
+					},
+				]
+			},
+			{
+				_class = "PhysicsShapeList"
+				children = 
+				[
+					{
+						_class = "PhysicsShapeBox"
+						parent_bone = ""
+						surface_prop = "default"
+						collision_tags = "solid"
+						origin = [ 0.263112, 0.051428, 4.724224 ]
+						angles = [ 0.0, 0.0, 0.0 ]
+						dimensions = [ 22.012493, 37.174622, 9.292811 ]
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						filename = "models/techmisc/Yamaha_KX-202.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 85.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"_APL0002_Cassette_Deck_Yamaha_KX_W202",
+								"_APL0002_Deck_B",
+								"_APL0002_Deck_A",
+								"_APL0002_Play_Stop",
+								"_APL0002_Tape_Controls",
+								"_APL0002_Tape_Controls1",
+								"_APL0002_Play_Stop1",
+								"_APL0002_Tape_Controls2",
+								"_APL0002_Tape_Controls3",
+								"_APL0002_Timer",
+								"_APL0002_Tape_Counter",
+								"_APL0002_Tape_Counter1",
+								"_APL0002_Tape_Counter2",
+								"_APL0002_Dials",
+								"_APL0002_Dials1",
+								"_APL0002_Dials2",
+								"_APL0002_Power",
+								"_APL0002_Eject",
+								"_APL0002_Tape_Counter_Reset",
+								"_APL0002_Deck_Selector_Dubbing",
+								"_APL0002_Deck_Selector_Dubbing1",
+								"_APL0002_Deck_Selector_Dubbing2",
+								"_APL0002_Eject1",
+								"_APL0002_Spindles",
+								"_APL0002_Spindles1",
+								"_APL0002_Spindles2",
+								"_APL0002_Spindles3",
+								"_APL0002_Back",
+								"_APL0002_Front",
+							]
+						}
+					},
+				]
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}
