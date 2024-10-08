@@ -179,6 +179,9 @@ namespace FNAF
 			//they are swiftly deleted and put here.
 			//the finds are ugly as shit, uglier than this.
 			//its dumb.
+			//it would be a lot better if i could index a big table,
+			//eg. i have an object named "fuck", i should be able to get it
+			//something like Scene.Objects["fuck"]. the FindByName method is stupid.
 
 			CamFiveLight = LocalScene.CreateObject().Components.Create<SpotLight>();
 			CamFiveLight.Enabled = false;

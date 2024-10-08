@@ -64,6 +64,9 @@ namespace FNAF
 			HeldItemModel.WorldRotation = new Angles( 0, 0, 32.5f );
 			CurrentAI = Difficulty[night];
 			MoveSound = FNAFGameManager.GameState.stepsound;
+			MovementDelay = 4.97f;
+			MovementOpportunity = -5;
+			StingerTimer = 10;
 			Tweaking = 0;
 			ChangePos( "spawn", false );
 		}
@@ -138,7 +141,8 @@ namespace FNAF
 			}
 			else if ( CurrentPos != "twob" )
 			{
-				Model.SceneModel.SetAnimParameter( "pose", AnimIndex[CurrentPos] );
+				if(Model != null)//hack, i dont think this was actually a problem
+					Model.SceneModel.SetAnimParameter( "pose", AnimIndex[CurrentPos] );
 				Tweaking = 0;
 			}
 			if ( ReadyToScare )

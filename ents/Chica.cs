@@ -67,6 +67,9 @@ namespace FNAF
 			MoveSound = FNAFGameManager.GameState.stepsound;
 			KitchenTimer = 17;
 			KitchenSounds = new SoundEvent();
+			MovementDelay = 4.98f;
+			MovementOpportunity = -5;
+			StingerTimer = 10;
 			Tweaking = 0;
 			KitchenSounds.Sounds = new List<SoundFile> {
 				SoundFile.Load( "sounds/kitchensounds1.wav" ),

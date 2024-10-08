@@ -66,6 +66,17 @@ namespace FNAF
 			HeldItemModel.Model = Sandbox.Model.Load( "models/alejenus/fnafvr/freddy/freddyvr_mic.vmdl" );
 			HeldItem.WorldPosition = new Vector3( 16, -11.7f, 47 );
 			CurrentAI = Difficulty[night];
+			MovementDelay = 3.02f;
+			Cooldown = 0;
+			OnCooldown = false;
+			DoPoweroutSequence = false;
+			MovementOpportunity = -5;
+			MoveSound = new SoundEvent();
+			MoveSound.Sounds = new List<SoundFile> {
+				SoundFile.Load( "sounds/freddymovelaugh.sound" ),
+				SoundFile.Load( "sounds/freddymovelaugh2.sound" ),
+				SoundFile.Load( "sounds/freddymovelaugh3.sound" )
+			};
 			ChangePos( "spawn", false );
 		}
 		public override void ChangePos( string pos, bool hideitem = true )

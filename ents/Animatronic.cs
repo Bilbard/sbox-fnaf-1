@@ -52,7 +52,8 @@ namespace FNAF
 			{
 				HeldItem.Destroy();
 				MoveSoundHandle = Sound.Play( MoveSound, FNAFGameManager.GameState.OfficeCamera.WorldPosition );
-				MoveSoundHandle.Volume = 0.5f;
+				if( MoveSoundHandle != null )//hack, i dont think this was actually a problem
+					MoveSoundHandle.Volume = 0.5f;
 			}
 			CurrentPos = pos;
 			Model.Enabled = true;

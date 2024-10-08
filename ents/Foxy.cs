@@ -9,7 +9,7 @@ namespace FNAF
 {
 	public class FNAFFoxy : FNAFAnimatronic
 	{
-		//public GameObject CurtainObject;
+		public GameObject CurtainObject;
 		public SkinnedModelRenderer CurtainModel;
 		public Dictionary<string, int> CurtainAnimIndex;
 		public TimeSince Cooldown;
@@ -74,12 +74,24 @@ namespace FNAF
 				{ "office", new Transform(new Vector3(-72.75f, -1076.5f, 63.965f), new Angles(0, 270, 0)) }
 			};
 			Model.Model = Sandbox.Model.Load( "models/alejenus/fnafvr/foxy/foxyvr.vmdl" );
-			//CurtainObject = LocalScene.CreateObject( true );
-			//CurtainObject.WorldPosition = new Vector3( 708, -754.25f, 79.75f );
-			//CurtainObject.WorldRotation = new Angles( 0, -90, 0 );
-			CurtainModel = HeldItem.GetComponent<SkinnedModelRenderer>( true );//hack, reusing this modelhandle
+			CurtainObject = LocalScene.CreateObject( true );
+			CurtainObject.WorldPosition = new Vector3( 708, -754.25f, 79.75f );
+			CurtainObject.WorldRotation = new Angles( 0, -90, 0 );
+			CurtainModel = CurtainObject.Components.Create<SkinnedModelRenderer>( true );
 			CurtainModel.Model = Sandbox.Model.Load( "models/alejenus/fnafvr/stage/curtain.vmdl" );
 			ChangePos( "spawn", false );
+			MovementDelay = 5.01f;
+			MovementOpportunity = -5;
+			Cooldown = -5;
+			ThinkDelay = 1;
+			Running = false;
+			ReadyToRun = false;
+			RandomDelay = 5;
+			PowerStack = 1;
+			RunSound = new SoundEvent();
+			RunSound.Sounds = new List<SoundFile> { SoundFile.Load( "sounds/running.sound" ) };
+			PoundSound = new SoundEvent();
+			PoundSound.Sounds = new List<SoundFile> { SoundFile.Load( "sounds/pounding.sound" ) };
 		}
 		public override void ChangePos( string pos, bool hideitem = true )
 		{
