@@ -1,0 +1,248 @@
+﻿@using System
+@using Sandbox;
+@using Sandbox.UI;
+@using FNAF;
+@inherits PanelComponent
+<root>
+    @if (MenuEnabled)
+    {
+    <div class="backgroundimage"></div>
+    <div class="backgroundstatic"></div>
+    <div class="backgroundstatic2"></div>
+    <div class="bar"></div>
+        <div class="title">
+            <div class="part1">Five</div>
+            <div class="part2">Nights</div>
+            <div class="part3">at</div>
+            <div class="part4">Freddy's</div>
+        </div>
+        <div class="starpanel">
+            @DetermineStars()
+        </div>
+        <div class="options">
+            <div class="option-newgame" onclick="@StartNew">New Game
+                <div class="arrows">&gt;&gt;</div>
+            </div>
+            @if ( save.night > 1 )
+            {
+                <div class="option-continue" onclick="@Start">
+                    Continue
+                    <div class="arrows">&gt;&gt;</div>
+                    <div class="nightaddon">Night @(save.night)</div>
+                </div>
+            }
+            @if ( StarCount > 0 )
+            {
+                <div class="option-sixth" onclick="@StartSixth">6th Night
+                    <div class="arrows">&gt;&gt;</div>
+                </div>
+            }
+            @if ( StarCount > 1 )
+            {
+                <div class="option-custom" onclick="@OpenCustomMenu">Custom Night
+                    <div class="arrows">&gt;&gt;</div>
+                </div>
+            }
+        </div>
+    <div class="version">v 1.2</div>//arbitrarily set
+    <div class="watermark" onclick="@EasterEgg">2024 The Gabe</div>
+    //<div class="discord" onclick="@OpenDiscord"></div>
+    }
+</root>
+
+@code
+{
+    SoundEvent bgmevent;
+    SoundHandle bgm;
+    SoundEvent eeevent;
+    SoundHandle ee;
+    public static bool MenuEnabled;
+    bool First;
+    bool InTransition;
+    public ProgressCookie save;
+    TimeSince interfere;
+    TimeSince barmover = 0;
+    void OpenFacepunch()
+    {
+        //this.Navigate("/noticemefacepunch");
+    }
+    void OpenInfo()
+    {
+        //this.Navigate("/demoinfo");
+    }
+
+    void EasterEgg()
+    {
+        if (eeevent != null)
+            ee = Sound.Play(eeevent, new Vector3(0,0,0));
+    }
+
+    protected override void OnUpdate()
+    {
+        if(!First)
+        {
+            barmover = 14.9f;
+            //SetClass("barmove", true);
+            Panel.StyleSheet.Load("/Styles/mainmenu.razor.scss");
+            interfere = -(float)(new Random().NextDouble() * 2.3 + 0.6);
+            Sound.StopAll(0);
+            MenuEnabled = true;
+            InTransition = false;
+            First = true;
+            bgmevent = new SoundEvent();
+            bgmevent.Sounds = new List<SoundFile> { SoundFile.Load("sounds/bgm.wav") };
+            eeevent = new SoundEvent();
+            eeevent.Sounds = new List<SoundFile> { SoundFile.Load("sounds/partyfavor.wav") };
+        }
+        if (interfere != null)
+        {
+            if (interfere >= 0)
+            {
+                SetClass("interfere", true);
+                if (interfere > 0.75)
+                {
+                    interfere = -(float)(new Random().NextDouble() * 3.5 + 0.4);
+                    SetClass("interfere", false);
+                }
+            }
+            else
+            {
+                SetClass("interfere", false);
+            }
+        }
+        if(barmover != null)
+        {
+            if (barmover < 0 & barmover > -1)
+            {
+                SetClass("barmove", true);
+                barmover = 0;
+            }
+
+            if (barmover >= 15.4f)
+            {
+                SetClass("barmove", false);
+                barmover = -1.2f;
+            }
+        }
+
+        if (bgm == null & CustomNight.BootTimer < 0)
+        {
+            bgm = Sound.Play(bgmevent, new Vector3(0, 0, 0));
+        }
+        else if (bgm != null)
+        {
+            if (!bgm.IsPlaying & CustomNight.BootTimer < 0)
+            {
+                bgm = Sound.Play(bgmevent, new Vector3(0, 0, 0));
+            }
+        }
+        if (InTransition != null)
+        {
+            if (InTransition)
+            {
+                if (StartScreen.Done)
+                {
+                    FNAFGameManager.setup = false;
+                    Scene.LoadFromFile("scenes/game.scene");
+                }
+            }
+        }
+        if (bgm != null)
+        {
+            if (StartScreen.MenuEnabled)
+            {
+                bgm.Stop();
+            }
+        }
+    }
+
+    void OpenTransition( bool ad = false )
+    {
+        InTransition = true;
+        StartScreen.MenuEnabled = true;
+        StartScreen.DoAd = ad;
+        StartScreen.fadetimer = ad ? 0 : -1;
+        MenuEnabled = false;
+        if (bgm != null)
+        {
+            bgm.Stop();
+        }
+    }
+
+    void OpenCustomMenu()
+    {
+        MenuEnabled = false;
+        CustomNight.MenuEnabled = true;
+    }
+
+    void OpenDiscord()
+    {
+        Log.Info("E");
+        //this.Navigate("/discord");
+    }
+    void StartBadpunch()
+    {
+        //new ProgressTracker().Save(save);
+        //Game.Menu.StartServerAsync(1, "finitfeddy", "fnaf1");
+    }
+    void Start()
+    {
+        //ProgressTracker.Save(save);
+        FNAFGameManager.night = save.night;
+        OpenTransition(save.night == 1 ? true : false);
+        //Scene.LoadFromFile("scenes/game.scene");
+        //Game.Menu.StartServerAsync(1, "finitfeddy", "fnaf1");
+    }
+    void StartNew()
+    {
+        save.night = 1;
+        ProgressTracker.Save(save);
+        FNAFGameManager.night = save.night;
+        OpenTransition(true);
+        //Scene.LoadFromFile("scenes/game.scene");
+        //Game.Menu.StartServerAsync(1, "finitfeddy", "fnaf1");
+    }
+    void StartSixth()
+    {
+        //ProgressTracker.Save(save);
+        FNAFGameManager.night = 6;
+        OpenTransition();
+        //Scene.LoadFromFile("scenes/game.scene");
+        //Game.Menu.StartServerAsync(1, "finitfeddy", "fnaf1");
+    }
+    bool SaveData()
+    {
+        ProgressTracker.Validate();
+        save = ProgressTracker.Fetch();
+        return true;
+    }
+    void Quit()
+    {
+        Game.Close();
+    }
+    public string Stars;
+    public int StarCount;
+    string DetermineStars()
+    {
+        SaveData();
+        //ProgressTracker.Cheater();
+        Stars = "";
+        StarCount = 0;
+        if (save.fourtwenty)
+        {
+            Stars = "★★★";
+            StarCount = 3;
+        }
+        else if (save.bestnight > 5)
+        {
+            Stars = "★★";
+            StarCount = 2;
+        }
+        else if (save.bestnight == 5)
+        {
+            Stars = "★";
+            StarCount = 1;
+        }
+        return Stars;
+    }
+}

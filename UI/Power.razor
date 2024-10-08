@@ -1,0 +1,68 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using FNAF;
+@inherits PanelComponent
+
+<root></root>
+
+@code
+{
+    public Label Label { get; protected set; }
+    public Label PowerLabel { get; protected set; }
+    public Label UsageText { get; protected set; }
+    public Panel Power1 { get; protected set; }
+    public Panel SubPower1 { get; protected set; }
+    public Panel Power2 { get; protected set; }
+    public Panel SubPower2 { get; protected set; }
+    public Panel Power3 { get; protected set; }
+    public Panel SubPower3 { get; protected set; }
+    public Panel Power4 { get; protected set; }
+    public Panel SubPower4 { get; protected set; }
+    public Panel CamIcon { get; protected set; }
+    public bool setup { get; set; }
+    public static int usage { get; set; }
+    public static bool powerout { get; set; }
+    public static int power { get; set; }
+    public void InitPower()
+    {
+        setup = true;
+        usage = 0;
+        powerout = false;
+        Label = new Label();
+        Label.Parent = this.Panel;
+        Label.Text = "Power Left:";
+        Label.SetProperty("class", "PowerText");
+        PowerLabel = new Label();
+        PowerLabel.Parent = this.Panel;
+        PowerLabel.Text = "100%";
+        PowerLabel.SetProperty("class", "PowerPercent");
+        UsageText = new Label();
+        UsageText.Parent = this.Panel;
+        UsageText.Text = "Usage:";
+        UsageText.SetProperty("class", "UsageText");
+        Power1 = Panel.Add.Panel("PowerConsume1");
+        SubPower1 = Power1.Add.Panel("SubPanel");
+        Power2 = Panel.Add.Panel("PowerConsume2");
+        SubPower2 = Power2.Add.Panel("SubPanel");
+        Power3 = Panel.Add.Panel("PowerConsume3");
+        SubPower3 = Power3.Add.Panel("SubPanel");
+        Power4 = Panel.Add.Panel("PowerConsume4");
+        SubPower4 = Power4.Add.Panel("SubPanel");
+        CamIcon = Panel.Add.Panel("CamPanel");
+    }
+
+    protected override void OnUpdate()
+    {
+        if(!setup) { InitPower(); }
+        if (powerout)
+        {
+            SetClass("powerout", true);
+        }
+        PowerLabel.Text = $"{(int)(power / 10)}%";
+        SetClass("activetwo", usage > 0 ? true : false);
+        SetClass("activethree", usage > 1 ? true : false);
+        SetClass("activefour", usage > 2 ? true : false);
+    }
+
+    protected override int BuildHash() => System.HashCode.Combine(PowerLabel, Power1, Power2, Power3, Power4);
+}

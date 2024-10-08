@@ -1,0 +1,187 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using FNAF;
+@inherits PanelComponent
+<head>
+    <style>
+        StartScreen {
+        .rpanel {
+            position: absolute;
+            top: 40%;
+            font-size: 96px;
+            font-weight: bold;
+            color: white;
+            height: 90px;
+            width: 100%;
+            font-family: "Five Nights at Freddy's";
+            text-align: center;
+            justify-content: center;
+            .string1
+            {
+                position: absolute;
+                top: 15%;
+                text-align: center;
+                justify-content: center;
+            }
+            .string2 {
+                position: absolute;
+                top: 80%;
+                //font-size: 64px;
+                text-align: center;
+                justify-content: center;
+            }
+        }
+
+        .blipoverlay {
+            position: absolute;
+            background-image: url('materials/ui/interference.gif');
+            opacity: 0;
+            width: 0px;
+            height: 0px;
+            background-size: 0 0;
+        }
+
+        .adoverlay {
+            position: absolute;
+            background-image: url('materials/ui/newspaperad.png');
+            opacity: 0;
+            width: 0px;
+            height: 0px;
+            background-size: 0 0;
+        }
+
+        &.blip {
+            .blipoverlay
+            {
+                width: 100%;
+                height: 100%;
+                opacity: 1;
+                background-size: 100% 100%;
+            }
+        }
+
+        &.ad {
+            .adoverlay
+            {
+                width: 100%;
+                height: 100%;
+                opacity: 1;
+                background-size: 100% 100%;
+            }
+        }
+
+        .fadepanel {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 1;
+            transition: opacity 2.5s;
+            background-size: 100% 100%;
+            background-color: black;
+            color: black;
+        }
+
+        &.fade {
+            .fadepanel
+            {
+                opacity: 0;
+            }
+        }
+        &.fadequick {
+            .fadepanel
+            {
+                opacity: 0;
+                transition: opacity 0s;
+            }
+        }
+        .backboard {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+        }
+        }
+    </style>
+</head>
+<root>
+@if (MenuEnabled)
+{
+    <div class="backboard"></div>
+    <div class="rpanel">
+        <div class="string1">12:00 AM</div>
+        <div class="string2">@(nightstring) Night</div>
+    </div>
+    <div class="adoverlay"></div>
+    <div class="blipoverlay"></div>
+    <div class="fadepanel"></div>
+}
+</root>
+
+@code
+{
+    public static TimeSince fadetimer { get; set; }
+    public static bool DoAd { get; set; }
+    public static bool MenuEnabled;
+    public static bool Done { get; set; }
+    public static string[] nightstringtable = { "You shouldnt see this", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th" };
+
+    public string nightstring { get; set; }
+    public static float fadefloat { get; set; }
+    public bool first { get; set; }
+
+    protected override void OnUpdate()
+    {
+        if (!first)
+        {
+            fadetimer = 99;
+            DoAd = true;
+            first = true;
+            Done = false;
+            MenuEnabled = false;
+        }
+        if (!MenuEnabled) { return; }
+        nightstring = nightstringtable[FNAFGameManager.night];
+        if(!DoAd & fadetimer < 1)
+        {
+            SetClass("fadequick", true);
+            SetClass("blip", true);
+            fadetimer = 5f;
+            var blips = new SoundEvent();
+            blips.Sounds = new List<SoundFile> { SoundFile.Load("sounds/camnoise.wav") };
+            Sound.Play(blips, new Vector3(0, 0, 0));
+        }
+        if (fadetimer >= 1 & fadetimer <= 7.5f)
+        {
+            SetClass("fade", true);
+        }
+        else if (fadetimer >= 7.5f & fadetimer <= 10)
+        {
+            SetClass("fade", false);
+            SetClass("fadequick", false);
+        } else
+        {
+            if (DoAd & fadetimer > 10)
+            {
+                SetClass("blip", true);
+                SetClass("fade", true);
+                SetClass("fadequick", true);
+                fadetimer = 5f;
+                DoAd = false;
+                var blips = new SoundEvent();
+                blips.Sounds = new List<SoundFile> { SoundFile.Load("sounds/camnoise.wav") };
+                Sound.Play(blips, new Vector3(0, 0, 0));
+            }
+            else if(!DoAd & fadetimer > 9)
+            {
+                Done = true;
+                fadetimer = 20;
+            }
+        }
+        if (!DoAd & fadetimer >= 5.3f)
+        {
+            SetClass("blip", false);
+        }
+        SetClass("ad", DoAd);
+    }
+    protected override int BuildHash() => System.HashCode.Combine(System.DateTime.Now);
+}

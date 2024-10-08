@@ -1,0 +1,487 @@
+@using System
+@using Sandbox;
+@using Sandbox.UI;
+@using FNAF;
+@inherits PanelComponent
+<head>
+    <style>
+        CustomNight {
+            .cursordeactivator {
+            position: absolute;
+            pointer-events: all;
+            color:black;
+            background-color: black;
+            background-size: 100% 100%;
+            cursor: default;
+            width: 100%;
+            height: 100%;
+        }
+        .titletext {
+            position: absolute;
+            justify-content: center;
+            width: 100%;
+            color: white;
+            top: 5%;
+            font-size: 72px;
+            font-family: Consolas;
+        }
+        .detailtext {
+            position: absolute;
+            width: 100%;
+            color: white;
+            top: 90%;
+            left: 10%;
+            font-size: 32px;
+            font-family: Consolas;
+        }
+        .readybutton {
+            position: absolute;
+            cursor: pointer;
+            pointer-events: all;
+            color: white;
+            background-color: gray;
+            top: 87%;
+            right: 3%;
+            font-size: 80px;
+            font-family: Consolas;
+            pointer-events: all;
+        }
+        .gfreddy {
+            pointer-events: all;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url( '/materials/ui/gfreddy.png' );
+            background-size: 100% 100%;
+            opacity: 0;
+        }
+        &.dogfreddy {
+            .gfreddy {
+                opacity: 1;
+            }
+        }
+        .images {
+            position: absolute;
+            top: 27%;
+            justify-content: center;
+            width: 100%;
+            height: 128px;
+            .freddyimage {
+                margin-left: 64px;
+                margin-right: 64px;
+                width: 320px;
+                height: 320px;
+                background-image: url( '/materials/ui/freddy.png' );
+                background-size: 100% 100%;
+                .freddytext
+                {
+                    position: absolute;
+                    font-size: 72px;
+                    width: 320px;
+                    top: -85%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+
+                .aitext {
+                    position: absolute;
+                    font-size: 48px;
+                    width: 320px;
+                    top: 275%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+
+                .ainumber {
+                    position: absolute;
+                    font-size: 96px;
+                    width: 320px;
+                    top: 340%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+
+                .ainumberdec {
+                    pointer-events: all;
+                    cursor: pointer;
+                    position: relative;
+                    font-size: 96px;
+                    width: 64px;
+                    top: 135%;
+                    height: 128px;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                    background-color: gray;
+                }
+
+                .ainumberinc {
+                    pointer-events: all;
+                    cursor: pointer;
+                    position: relative;
+                    font-size: 96px;
+                    width: 64px;
+                    top: 135%;
+                    left: 60%;
+                    height: 128px;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                    background-color: gray;
+                }
+            }
+
+            .bonnieimage {
+                margin-left: 64px;
+                margin-right: 64px;
+                width: 320px;
+                height: 320px;
+                background-image: url( '/materials/ui/bonnie.png' );
+                background-size: 100% 100%;
+                .bonnietext
+                {
+                    position: absolute;
+                    font-size: 72px;
+                    width: 320px;
+                    top: -85%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+                .aitext {
+                    position: absolute;
+                font-size: 48px;
+                    width: 320px;
+                    top: 275%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+
+                .ainumber {
+                    position: absolute;
+                    font-size: 96px;
+                    width: 320px;
+                    top: 340%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+
+                .ainumberdec {
+                    pointer-events: all;
+                    position: relative;
+                    cursor: pointer;
+                    font-size: 96px;
+                    width: 64px;
+                    top: 135%;
+                    height: 128px;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                    background-color: gray;
+                }
+
+                .ainumberinc {
+                    pointer-events: all;
+                    cursor: pointer;
+                    position: relative;
+                    font-size: 96px;
+                    width: 64px;
+                    top: 135%;
+                    left: 60%;
+                    height: 128px;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                    background-color: gray;
+                }
+            }
+
+            .chicaimage {
+                margin-left: 64px;
+                margin-right: 64px;
+                width: 320px;
+                height: 320px;
+                background-image: url( '/materials/ui/chica.png' );
+                background-size: 100% 100%;
+                .chicatext
+                {
+                    position: absolute;
+                    font-size: 72px;
+                    width: 320px;
+                    top: -85%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+                .aitext {
+                    position: absolute;
+                    font-size: 48px;
+                    width: 320px;
+                    top: 275%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+
+                .ainumber {
+                    position: absolute;
+                    font-size: 96px;
+                    width: 320px;
+                    top: 340%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+
+                .ainumberdec {
+                    pointer-events: all;
+                    cursor: pointer;
+                    position: relative;
+                    font-size: 96px;
+                    width: 64px;
+                    top: 135%;
+                    height: 128px;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                    background-color: gray;
+                }
+
+                .ainumberinc {
+                    pointer-events: all;
+                    cursor: pointer;
+                    position: relative;
+                    font-size: 96px;
+                    width: 64px;
+                    top: 135%;
+                    left: 60%;
+                    height: 128px;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                    background-color: gray;
+                }
+            }
+
+            .foxyimage {
+                margin-left: 64px;
+                margin-right: 64px;
+                width: 320px;
+                height: 320px;
+                background-image: url( '/materials/ui/foxy.png' );
+                background-size: 100% 100%;
+                .foxytext
+                {
+                    position: absolute;
+                    font-size: 72px;
+                    width: 320px;
+                    top: -85%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+                .aitext {
+                    position: absolute;
+                    font-size: 48px;
+                    width: 320px;
+                    top: 275%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+                .ainumber {
+                    position: absolute;
+                    font-size: 96px;
+                    width: 320px;
+                    top: 340%;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                }
+
+                .ainumberdec {
+                    pointer-events: all;
+                    cursor: pointer;
+                    position: relative;
+                    font-size: 96px;
+                    width: 64px;
+                    top: 135%;
+                    height: 128px;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                    background-color: gray;
+                }
+
+                .ainumberinc {
+                    pointer-events: all;
+                    cursor: pointer;
+                    position: relative;
+                    font-size: 96px;
+                    width: 64px;
+                    top: 135%;
+                    left: 60%;
+                    height: 128px;
+                    justify-content: center;
+                    font-family: Consolas;
+                    color: white;
+                    background-color: gray;
+                }
+            }
+        }
+    }
+    </style>
+</head>
+<root>
+    @if (MenuEnabled)
+    {
+        <div class="cursordeactivator"></div>
+        <div class="titletext">Customize Night</div>
+        <div class="images">
+            <div class="freddyimage">
+                <div class="freddytext">Freddy</div>
+                <div class="aitext">A.I. Level</div>
+                <div class="ainumber">@(FreddyLevel)</div>
+                <div class="ainumberdec" onclick="@FreddyDec">&lt;</div>
+                <div class="ainumberinc" onclick="@FreddyInc">&gt;</div>
+            </div>
+            <div class="bonnieimage">
+                <div class="bonnietext">Bonnie</div>
+                <div class="aitext">A.I. Level</div>
+                <div class="ainumber">@(BonnieLevel)</div>
+                <div class="ainumberdec" onclick="@BonnieDec">&lt;</div>
+                <div class="ainumberinc" onclick="@BonnieInc">&gt;</div>
+            </div>
+            <div class="chicaimage">
+                <div class="chicatext">Chica</div>
+                <div class="aitext">A.I. Level</div>
+                <div class="ainumber">@(ChicaLevel)</div>
+                <div class="ainumberdec" onclick="@ChicaDec">&lt;</div>
+                <div class="ainumberinc" onclick="@ChicaInc">&gt;</div>
+            </div>
+            <div class="foxyimage">
+                <div class="foxytext">Foxy</div>
+                <div class="aitext">A.I. Level</div>
+                <div class="ainumber">@(FoxyLevel)</div>
+                <div class="ainumberdec" onclick="@FoxyDec">&lt;</div>
+                <div class="ainumberinc" onclick="@FoxyInc">&gt;</div>
+            </div>
+        </div>
+        <div class="detailtext">(1-2) easy  (3-6) med  (7-12) hard  (12+) extreme</div>
+        <div class="readybutton" onclick="@Ready">READY</div>
+        <div class="gfreddy"></div>
+    }
+</root>
+
+@code
+{
+    public ProgressCookie save;
+    public static bool MenuEnabled;
+    public bool First;
+    public int FreddyLevel;
+    public int BonnieLevel;
+    public int ChicaLevel;
+    public int FoxyLevel;
+    public bool InTransition;
+    public static TimeSince BootTimer;
+
+    void FreddyDec()
+    {
+        if (FreddyLevel == 0) { return; }
+        FreddyLevel--;
+    }
+
+    void FreddyInc()
+    {
+        if (FreddyLevel == 20) { return; }
+        FreddyLevel++;
+    }
+
+    void BonnieDec()
+    {
+        if (BonnieLevel == 0) { return; }
+        BonnieLevel--;
+    }
+
+    void BonnieInc()
+    {
+        if (BonnieLevel == 20) { return; }
+        BonnieLevel++;
+    }
+
+    void ChicaDec()
+    {
+        if (ChicaLevel == 0) { return; }
+        ChicaLevel--;
+    }
+
+    void ChicaInc()
+    {
+        if (ChicaLevel == 20) { return; }
+        ChicaLevel++;
+    }
+
+    void FoxyDec()
+    {
+        if (FoxyLevel == 0) { return; }
+        FoxyLevel--;
+    }
+
+    void FoxyInc()
+    {
+        if (FoxyLevel == 20) { return; }
+        FoxyLevel++;
+    }
+    void Ready()
+    {
+        if(FreddyLevel == 1 & BonnieLevel == 9 & ChicaLevel == 8 & FoxyLevel == 7)
+        {
+            Sound.StopAll(0);
+            var soundfx = new SoundEvent();
+            soundfx.Sounds = new List<SoundFile> { SoundFile.Load("sounds/xscream2.sound") };
+            var e = Sound.Play(soundfx, new Vector3(0, 0, 1));
+            e.Volume = 1.5f;
+            SetClass("dogfreddy", true);
+            BootTimer = 0;
+        } else {
+            FNAFGameManager.night = 7;
+            FNAFGameManager.FreddyLevel = FreddyLevel;
+            FNAFGameManager.BonnieLevel = BonnieLevel;
+            FNAFGameManager.ChicaLevel = ChicaLevel;
+            FNAFGameManager.FoxyLevel = FoxyLevel;
+            StartScreen.DoAd = false;
+            StartScreen.MenuEnabled = true;
+            StartScreen.fadetimer = -1;
+            MenuEnabled = false;
+            InTransition = true;
+        }
+    }
+    protected override void OnUpdate()
+    {
+        if (!First)
+        {
+            MenuEnabled = false;
+            InTransition = false;
+            First = true;
+            BootTimer = -9999;
+        }
+        if(InTransition)
+        {
+            if(StartScreen.Done)
+            {
+                FNAFGameManager.setup = false;
+                Scene.LoadFromFile("scenes/game.scene");
+            }
+        }
+        if( BootTimer > 6 )
+        {
+            Game.Close();
+        }
+    }
+    protected override int BuildHash() => System.HashCode.Combine(MenuEnabled, FreddyLevel, BonnieLevel, ChicaLevel, FoxyLevel);
+}

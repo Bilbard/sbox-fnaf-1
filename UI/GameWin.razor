@@ -1,0 +1,230 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using FNAF;
+@inherits PanelComponent
+<head>
+    <style>
+        GameWin {
+            font-family: "Five Nights at Freddy's";
+            .backdrop
+            {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: black;
+                opacity: 0;
+            }
+            .hourtext {
+                position: absolute;
+                opacity: 0;
+                top: 43%;
+                height: 50%;
+                left: 45%;
+                font-size: 256px;
+                color: white;
+                transition: top 2s linear;
+                .hourtext2 {
+                    position: absolute;
+                    opacity: 0;
+                    top: 25%;
+                    color: white;
+                }
+            }
+            .timetext {
+                position: absolute;
+                opacity: 0;
+                top: 42.7%;
+                left: 51%;
+                font-size: 256px;
+                color: white;
+            }
+            .covertext1 {
+                position: absolute;
+                width: 100%;
+                background-color: black;
+                height: 39%;
+                top: 5%;
+                opacity: 0;
+            }
+            .covertext2 {
+                position: absolute;
+                width: 100%;
+                background-color: black;
+                height: 40%;
+                bottom: 5%;
+                opacity: 0;
+            }
+            .victorysplash1 {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-size: 100% 100%;
+                background-image: url('materials/ui/victory1.png');
+                opacity: 0;
+                transition: opacity 1.5s linear;
+            }
+            .victorysplash2 {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-size: 100% 100%;
+                background-image: url('materials/ui/victory2.png');
+                opacity: 0;
+                transition: opacity 1.5s linear;
+            }
+            .victorysplash3 {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-size: 100% 100%;
+                background-image: url('materials/ui/victory3.png');
+                opacity: 0;
+                transition: opacity 1.5s linear;
+            }
+            &.show {
+                .backdrop {  
+                    opacity: 1;
+                }
+                .hourtext {
+                    opacity: 1;
+                    .hourtext2 {
+                        opacity: 1;
+                    }
+                }
+                .timetext {
+                    opacity: 1;
+                }
+                .covertext1 {
+                    opacity: 1;
+                }
+                .covertext2 {
+                    opacity: 1;
+                }
+            }
+            &.move {
+                .hourtext {
+                    top: 30.6%;
+                }
+            }
+            &.victory1 {
+                .victorysplash1 {
+                    opacity: 1;
+                }
+            }
+            &.victory2 {
+                .victorysplash2 {
+                    opacity: 1;
+                }
+            }
+            &.victory3 {
+                .victorysplash3 {
+                    opacity: 1;
+                }
+            }
+            &.backdroppls {
+                .backdrop {
+                    opacity: 1;
+                }
+            }
+        }
+    </style>
+</head>
+<root>
+    <div class="backdrop"></div>
+    <div class="hourtext">5<div class="hourtext2">6</div></div>
+    <div class="timetext">AM</div>
+    <div class="covertext1"></div>
+    <div class="covertext2"></div>
+    <div class="victorysplash1"></div>
+    <div class="victorysplash2"></div>
+    <div class="victorysplash3"></div>
+</root>
+
+@code
+{
+    public bool setup;
+    public static bool DoStuff;
+    public static TimeSince MenuTimer;
+    public bool latch;
+    public bool victorysound;
+    public static int night;
+
+    protected override void OnUpdate()
+    {
+        if (!setup)
+        {
+            DoStuff = false;
+            setup = true;
+            MenuTimer = -99999999;
+            SetClass("show", false);
+            SetClass("move", false);
+        }
+        if ( DoStuff & !latch )
+        {
+            SetClass("show", true);
+            latch = true;
+            MenuTimer = 0;
+            var chime = new SoundEvent();
+            chime.Sounds = new List<SoundFile> { SoundFile.Load("sounds/victory.wav") };
+            Sound.Play(chime, new Vector3(0, 0, 0));
+        }
+        if ( MenuTimer > 3 )
+        {
+            SetClass("move", true);
+        }
+        if (MenuTimer > 13f & night < 5)
+        {
+            FNAFGameManager.ReturnToMenu();
+        }
+        if (MenuTimer > 13f & night == 5)
+        {
+            if (!victorysound)
+            {
+                var chime = new SoundEvent();
+                chime.Sounds = new List<SoundFile> { SoundFile.Load("sounds/lightsout.sound") };
+                Sound.Play(chime, new Vector3(0, 0, 0));
+                victorysound = true;
+            }
+            SetClass("victory1", true);
+            SetClass("backdroppls", true);
+        }
+        else if (MenuTimer > 13f & night == 6)
+        {
+            if (!victorysound)
+            {
+                var chime = new SoundEvent();
+                chime.Sounds = new List<SoundFile> { SoundFile.Load("sounds/lightsout.sound") };
+                Sound.Play(chime, new Vector3(0, 0, 0));
+                victorysound = true;
+            }
+            SetClass("victory2", true);
+            SetClass("backdroppls", true);
+        }
+        else if (MenuTimer > 13f & night == 7)
+        {
+            if (!victorysound)
+            {
+                var chime = new SoundEvent();
+                chime.Sounds = new List<SoundFile> { SoundFile.Load("sounds/lightsout.sound") };
+                Sound.Play(chime, new Vector3(0, 0, 0));
+                victorysound = true;
+            }
+            SetClass("victory3", true);
+            SetClass("backdroppls", true);
+        }
+        if (MenuTimer > 25f & night >= 5)
+        {
+            SetClass("show", false);
+            SetClass("victory1", false);
+            SetClass("victory2", false);
+            SetClass("victory3", false);
+            Sound.StopAll(1.5f);
+        }
+        if (MenuTimer > 26.6f & night >= 5)
+        {
+            FNAFGameManager.ReturnToMenu();
+        }
+    }
+
+    protected override int BuildHash() => System.HashCode.Combine(DoStuff);
+}

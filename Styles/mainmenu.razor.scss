@@ -1,0 +1,234 @@
+MainMenu {
+    .backgroundimage {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: url( '/materials/ui/fastbear.gif' );
+        background-size: 100% 100%;
+    }
+
+    .backgroundstatic {
+        cursor: default;
+        pointer-events: all;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: url( '/materials/ui/static3.gif' );
+        background-size: 100% 100%;
+        opacity: 0.3;
+    }
+
+    .backgroundstatic2 {
+        cursor: default;
+        pointer-events: all;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: url( '/materials/ui/interference_menu.gif' );
+        background-size: 100% 100%;
+        opacity: 0;
+    }
+
+    .bar {
+        width: 100%;
+        position: absolute;
+        height: 4.5%;
+        background-size: 100% 4.5%;
+        color: rgb(128, 128, 128);
+        background-color: rgb(128, 128, 128);
+        opacity: 0.15;
+        margin-top: -4.5%; //cant fucking change the move type, compensate for ease in/out
+        transition: margin-top 0s linear;
+    }
+
+    .title {
+        position: absolute;
+        font-size: 90px;
+        font-family: Consolas;
+        color: white;
+        margin-top: 0px;
+        margin-left: 305px;
+        width: 15%;
+
+        .part1 {
+            position: absolute;
+            margin-top: 50px;
+        }
+
+        .part2 {
+            position: absolute;
+            margin-top: 150px;
+        }
+
+        .part3 {
+            position: absolute;
+            margin-top: 250px;
+        }
+
+        .part4 {
+            position: absolute;
+            margin-top: 350px;
+        }
+    }
+
+    .version {
+        position: absolute;
+        font-size: 32px;
+        font-family: Consolas;
+        color: white;
+        bottom: 12px;
+        left: 24px;
+    }
+
+    .watermark {
+        position: absolute;
+        font-size: 20px;
+        font-family: Consolas;
+        color: white;
+        bottom: 12px;
+        right: 0px;
+        height: 16px;
+        width: 158px;
+        pointer-events: all;
+        cursor: default;
+    }
+
+    .discord {
+        position: absolute;
+        bottom: 48px;
+        height: 48px;
+        width: 69px;
+        background-image: url( 'materials/ui/discord.png' );
+        background-size: 100% 100%;
+        right: 1%;
+        cursor: pointer;
+    }
+
+    .starpanel {
+        position: absolute;
+        font-size: 128px;
+        font-family: Consolas;
+        color: white;
+        margin-left: 305px;
+        margin-top: 425px;
+        width: 50%;
+    }
+
+    .options {
+        position: absolute;
+        font-size: 90px;
+        font-family: Consolas;
+        color: white;
+        margin-left: 305px;
+        margin-top: 580px;
+        width: 50%;
+        height: 50%;
+
+        .option-newgame {
+            cursor: pointer;
+            pointer-events: all;
+            position: absolute;
+            margin-top: 0%;
+            pointer-events: all;
+
+            .arrows {
+                position: absolute;
+                right: 110%;
+                bottom: 6%;
+                opacity: 0;
+            }
+
+            &:hover {
+                .arrows {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .option-continue {
+            cursor: pointer;
+            pointer-events: all;
+
+            .arrows {
+                position: absolute;
+                right: 110%;
+                bottom: 6%;
+                opacity: 0;
+            }
+
+            &:hover {
+                .arrows {
+                    opacity: 1;
+                }
+            }
+
+            position: absolute;
+            margin-top: 20%;
+            pointer-events: all;
+
+            .nightaddon {
+                position: absolute;
+                top: 85%;
+                font-size: 48px;
+            }
+        }
+
+        .option-sixth {
+            cursor: pointer;
+            pointer-events: all;
+
+            .arrows {
+                position: absolute;
+                right: 109%;
+                bottom: 6%;
+                opacity: 0;
+            }
+
+            &:hover {
+                .arrows {
+                    opacity: 1;
+                }
+            }
+
+            position: absolute;
+            margin-top: 45%;
+            pointer-events: all;
+        }
+
+        .option-custom {
+            cursor: pointer;
+            pointer-events: all;
+
+            .arrows {
+                position: absolute;
+                right: 107%;
+                bottom: 6%;
+                opacity: 0;
+            }
+
+            &:hover {
+                .arrows {
+                    opacity: 1;
+                }
+            }
+
+            position: absolute;
+            margin-top: 65%;
+            pointer-events: all;
+        }
+    }
+
+    &.interfere {
+        .backgroundstatic2 {
+            opacity: 0.1;
+        }
+    }
+
+    &.barmove {
+        .bar {
+            transition-timing-function: linear;
+            transition: margin-top 15s linear;
+            margin-top: 100%;
+        }
+    }
+}

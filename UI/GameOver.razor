@@ -1,0 +1,89 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using FNAF;
+@inherits PanelComponent
+<head>
+    <style>
+        GameOver {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            .paneld {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-image: url( '/materials/ui/dead.png' );
+                background-size: 100% 100%;
+                opacity: 0;
+                transition: opacity 2s;
+            }
+            &.gameovershow {
+                .paneld {
+                    opacity: 1;
+                }
+            }
+            .gfreddy {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-image: url( '/materials/ui/gfreddy.png' );
+                background-size: 100% 100%;
+                opacity: 0;
+            }
+            &.dogfreddy {
+                .gfreddy {
+                    opacity: 1;
+                }
+            }
+        }
+    </style>
+</head>
+<root>
+    <div class="paneld"></div>
+    <div class="gfreddy"></div>
+</root>
+
+@code
+{
+    public bool setup;
+    public static bool DoStuff;
+    public static TimeSince StaticDelay;
+    public static TimeSince GFreddyJumpscare;
+    public bool FreddyLatch;
+
+    protected override void OnUpdate()
+    {
+        if ( !setup )
+        {
+            GFreddyJumpscare = 20;
+            StaticDelay = -9999999;
+            DoStuff = false;
+            setup = true;
+        }
+        if ( GFreddyJumpscare < 19 & !FreddyLatch )
+        {
+            SetClass("dogfreddy", true);
+            FreddyLatch = true;
+        } else if ( FreddyLatch )
+        {
+            SetClass("dogfreddy", true);
+            if( GFreddyJumpscare > 8 )
+            {
+                FNAFGameManager.setup = false;
+                Game.Close();
+                return;
+            }
+        }
+        if ( StaticDelay > 3.5f & DoStuff)
+        {
+            SetClass("gameovershow", true);
+        }
+        else { SetClass("gameovershow", false); }
+        if ( StaticDelay > 9 & DoStuff )
+        {
+            FNAFGameManager.ReturnToMenu();
+        }
+    }
+
+    protected override int BuildHash() => System.HashCode.Combine(DoStuff, StaticDelay, FreddyLatch);
+}

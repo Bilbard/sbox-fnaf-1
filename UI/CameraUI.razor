@@ -1,0 +1,232 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using FNAF;
+@inherits PanelComponent
+
+<root></root>
+
+@code
+{
+    public Button ClickPanel { get; protected set; }
+    public Panel WhiteBorder { get; protected set; }
+    public Panel CamsList { get; protected set; }
+    public Panel CamDot { get; protected set; }
+    public Button OneA { get; protected set; }
+    public Button OneB { get; protected set; }
+    public Button OneC { get; protected set; }
+    public Button Five { get; protected set; }
+    public Button Seven { get; protected set; }
+    public Button Six { get; protected set; }
+    public Button Three { get; protected set; }
+    public Button TwoA { get; protected set; }
+    public Button TwoB { get; protected set; }
+    public Button FourA { get; protected set; }
+    public Button FourB { get; protected set; }
+    public Label CamText { get; protected set; }
+    public Label CamSixText { get; protected set; }
+    public Panel BlipOverlay { get; protected set; }
+    public Panel ItsMeOverlay { get; protected set; }
+
+    //public static bool InCams { get; set; }
+    public static bool CamLatch { get; set; }
+    //public static string DesiredCam { get; set; }
+    //public static string CurCam { get; set; }
+
+    public static TimeSince blip { get; set; }
+    public static TimeSince hallucinationtimer { get; set; }
+    public static TimeSince displaydelay { get; set; }
+    public static TimeSince camswapdelay { get; set; }
+
+    public static bool bliptog { get; set; }
+    public static bool interferencetog { get; set; }
+
+    public static float lookoffset { get; set; }
+
+    public static bool lmb { get; set; }
+
+    public static bool disable { get; set; }
+
+    public Dictionary<string, string> camconvert = new Dictionary<string, string>
+    {
+        { "onea", "Show  Stage" },
+        { "oneb", "Dining  Area" },
+        { "onec", "Pirate  Cove" },
+        { "twoa", "West  Hall" },
+        { "twob", "West  Hall  Corner" },
+        { "three", "Supply  Closet" },
+        { "foura", "East  Hall" },
+        { "fourb", "East  Hall  Corner" },
+        { "five", "Backstage" },
+        { "six", "Kitchen" },
+        { "seven", "Restrooms" }
+    };
+
+    public bool Setup { get; set; }
+    //private FNAFGameState state;
+
+    /*public static void InitSound()
+        {
+        SoundHallucination = new SoundEvent();
+        SoundHallucination.Sounds = new List<SoundFile> { SoundFile.Load("sounds/hallucination.sound") };
+        hallucination = Sound.Play(SoundHallucination);
+        hallucination.Stop();
+        SoundInit = true;
+    }*/
+
+    public void InitCameraUI()
+    {
+        Setup = true;
+        CamLatch = false;
+        disable = false;
+        displaydelay = 0;
+        camswapdelay = 2;
+        blip = 1;
+        hallucinationtimer = 5;
+        WhiteBorder = Panel.Add.Panel("whiteborder");
+        CamsList = Panel.Add.Panel("camslist");
+        CamDot = WhiteBorder.Add.Panel("camdot");
+        CamSixText = new Label();
+        CamSixText.Parent = CamsList;
+        CamSixText.Text = "";
+        CamSixText.SetProperty("class", "camsixtext");
+        OneA = new Button();
+        OneA.Parent = CamsList;
+        OneA.Text = "Cam\n1A";
+        OneA.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "onea");
+        OneA.SetProperty("class", "onea");
+        OneB = new Button();
+        OneB.Parent = CamsList;
+        OneB.Text = "Cam\n1B";
+        OneB.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "oneb");
+        OneB.SetProperty("class", "oneb");
+        OneC = new Button();
+        OneC.Parent = CamsList;
+        OneC.Text = "Cam\n1C";
+        OneC.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "onec");
+        OneC.SetProperty("class", "onec");
+        TwoA = new Button();
+        TwoA.Parent = CamsList;
+        TwoA.Text = "Cam\n2A";
+        TwoA.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "twoa");
+        TwoA.SetProperty("class", "twoa");
+        TwoB = new Button();
+        TwoB.Parent = CamsList;
+        TwoB.Text = "Cam\n2B";
+        TwoB.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "twob");
+        TwoB.SetProperty("class", "twob");
+        FourA = new Button();
+        FourA.Parent = CamsList;
+        FourA.Text = "Cam\n4A";
+        FourA.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "foura");
+        FourA.SetProperty("class", "foura");
+        FourB = new Button();
+        FourB.Parent = CamsList;
+        FourB.Text = "Cam\n4B";
+        FourB.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "fourb");
+        FourB.SetProperty("class", "fourb");
+        Three = new Button();
+        Three.Parent = CamsList;
+        Three.Text = "Cam\n3";
+        Three.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "three");
+        Three.SetProperty("class", "three");
+        Five = new Button();
+        Five.Parent = CamsList;
+        Five.Text = "Cam\n5";
+        Five.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "five");
+        Five.SetProperty("class", "five");
+        Six = new Button();
+        Six.Parent = CamsList;
+        Six.Text = "Cam\n6";
+        Six.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "six");
+        Six.SetProperty("class", "six");
+        Seven = new Button();
+        Seven.Parent = CamsList;
+        Seven.Text = "Cam\n7";
+        Seven.AddEventListener("onclick", e => FNAFGameManager.GameState.DesiredCam = "seven");
+        Seven.SetProperty("class", "seven");
+        CamText = new Label();
+        CamText.Parent = CamsList;
+        CamText.Text = "Show Stage";
+        CamText.SetProperty("class", "curspottext");
+        BlipOverlay = Panel.Add.Panel("blipoverlay");
+        ItsMeOverlay = Panel.Add.Panel("itsmeoverlay");
+        ClickPanel = new Button();
+        ClickPanel.Parent = this.Panel;
+        ClickPanel.SetProperty("class", "buttonclicker");
+        ClickPanel.AddEventListener("onclick", e => lmb = true);
+    }
+
+    public void ToggleCams()
+    {
+        FNAFGameManager.GameState.InCams = !FNAFGameManager.GameState.InCams;
+        FNAFGameManager.GameState.Tablet.Flip();
+        FNAFGameManager.GameState.camusehandle = Sound.Play(FNAFGameManager.GameState.camusesound, FNAFGameManager.GameState.OfficeCamera.WorldPosition);
+        displaydelay = 0;
+
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+        if ( !Setup ) { InitCameraUI(); }
+        if ( Panel.MousePosition.x <= (Screen.Width/100*67) & Panel.MousePosition.y >= (Screen.Height/100*92))
+        {
+            if (!CamLatch & camswapdelay > 0.45f & !FNAFGameManager.GameState.PowerOutage & !disable)
+            {
+                ToggleCams();
+                //Log.Info(Screen.Size);
+                //Log.Info(Panel.MousePosition);
+                //FNAFGameManager.GameState.InCams = !FNAFGameManager.GameState.InCams;
+                //InCams = !InCams;
+                //CamLatch = true;
+                //usetog = true;
+                //
+                CamLatch = true;
+                camswapdelay = 0;
+            }
+        } else
+        {
+            CamLatch = false;
+        }
+
+        if (!FNAFGameManager.GameState.InCams & !disable)
+        {
+            if (Panel.MousePosition.x >= (Screen.Width / 100 * 75))
+            {
+
+                FNAFGameManager.GameState.OfficeCamOffset += ((Screen.Width / 100 * 75) - Panel.MousePosition.x) / 450;// 0.35f;
+            }
+            else if (Panel.MousePosition.x <= (Screen.Width / 100 * 25))
+            {
+
+                FNAFGameManager.GameState.OfficeCamOffset -= (Panel.MousePosition.x - (Screen.Width / 100 * 25)) / 450;//0.35f;
+            }
+            FNAFGameManager.GameState.OfficeCamOffset = System.Math.Clamp(FNAFGameManager.GameState.OfficeCamOffset, -18, 18);
+        } else if ( disable )
+        {
+            FNAFGameManager.GameState.OfficeCamOffset = 0;
+        }
+
+        SetClass("dothing", FNAFGameManager.GameState.InCams & displaydelay > 0.3);
+        SetClass("oneaactive", FNAFGameManager.GameState.CurCam == "onea");
+        SetClass("onebactive", FNAFGameManager.GameState.CurCam == "oneb");
+        SetClass("onecactive", FNAFGameManager.GameState.CurCam == "onec");
+        SetClass("fiveactive", FNAFGameManager.GameState.CurCam == "five");
+        SetClass("sevenactive", FNAFGameManager.GameState.CurCam == "seven");
+        SetClass("sixactive", FNAFGameManager.GameState.CurCam == "six");
+        SetClass("threeactive", FNAFGameManager.GameState.CurCam == "three");
+        SetClass("twoaactive", FNAFGameManager.GameState.CurCam == "twoa");
+        SetClass("twobactive", FNAFGameManager.GameState.CurCam == "twob");
+        SetClass("fouraactive", FNAFGameManager.GameState.CurCam == "foura");
+        SetClass("fourbactive", FNAFGameManager.GameState.CurCam == "fourb");
+
+        SetClass("blip", FNAFGameManager.GameState.InCams & blip < 0.15);
+
+        SetClass("hallucination", hallucinationtimer < 1.5);
+
+        CamText.Text = camconvert[FNAFGameManager.GameState.CurCam] == "" ? "???" : camconvert[FNAFGameManager.GameState.CurCam];
+        CamSixText.Text = FNAFGameManager.GameState.CurCam == "six" ? "-CAMERA DISABLED-\n        AUDIO ONLY" : "";
+    }
+
+    protected override int BuildHash() => System.HashCode.Combine(FNAFGameManager.GameState.InCams, FNAFGameManager.GameState.CurCam);
+}

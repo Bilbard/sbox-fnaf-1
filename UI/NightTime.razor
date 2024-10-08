@@ -1,0 +1,63 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using FNAF;
+@inherits PanelComponent
+<head>
+    <style>
+        .rpanel {
+            position: absolute;
+            right: 10px;
+            top: 32px;
+            font-size: 96px;
+            font-weight: bold;
+            color: white;
+            height: 90px;
+            width: 225px;
+            font-family: "Five Nights at Freddy's";
+            text-align: center;
+            .time
+            {
+                position: absolute;
+                right: 15%;
+            }
+            .night {
+                position: absolute;
+                top: 68%;
+                right: 20%;
+                font-size: 48px;
+            }
+            &.powerout {
+                color: rgba(0,0,0,0);
+                background-color: rgba(0,0,0,0);
+                .time
+                {
+                    color: rgba(0,0,0,0);
+                    background-color: rgba(0,0,0,0);
+                }
+                .night {
+                    color: rgba(0,0,0,0);
+                    background-color: rgba(0,0,0,0);
+                }
+            }
+        }
+        
+    </style>
+</head>
+<root>
+    @if (!powerout)
+    {
+        <div class="rpanel">
+            <div class="time">@(time != 12 ? "  " : "")@(time) AM</div>
+            <div class="night">Night @(night)</div>
+        </div>
+    }
+</root>
+
+@code
+{
+    public static int time { get; set; }
+    public static bool powerout { get; set; }
+    public static int night { get; set; }
+
+    protected override int BuildHash() => System.HashCode.Combine(powerout, time, night);
+}
